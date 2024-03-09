@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    [SerializeField] private float speed = 5f;
+    [SerializeField] private float speed = 8f;
     private void Update() {
         Vector2 inputVector = new Vector2(0, 0);
 
@@ -22,9 +22,9 @@ public class Player : MonoBehaviour {
 
         inputVector = inputVector.normalized;
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-        transform.position += moveDir * speed * Time.deltaTime;
-
-        Debug.Log(inputVector);
+        Vector3 movementDirection = new Vector3(inputVector.x, 0f, inputVector.y);
+        transform.position += movementDirection * speed * Time.deltaTime;
+        float rotateSpeed = 10f;
+        transform.forward = (Vector3.Slerp(transform.forward, movementDirection, Time.deltaTime * rotateSpeed));
     }
 }
