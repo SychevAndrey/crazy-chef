@@ -9,9 +9,37 @@ public class Player : MonoBehaviour {
     private bool isWalking;
     private void Update() {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
-
         Vector3 movementDirection = new Vector3(inputVector.x, 0f, inputVector.y);
-        transform.position += movementDirection * speed * Time.deltaTime;
+
+        float moveDistance = speed * Time.deltaTime;
+        float playerRadius = 0.7f;
+        float playerHeight = 2f;
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, movementDirection, moveDistance);
+
+        if (!canMove) {
+            Vector3 moveDirX = new Vector3(movementDirection.x, 0f, 0f).normalized;
+            canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
+        
+            if (canMove) {
+                // Can move only in x direction
+                movementDirection = moveDirX;
+            } else {
+                Vector3 moveDirZ = new Vector3(0f, 0f, movementDirection.z).normalized;
+                canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
+
+                if (canMove) {
+                    // Can move only in z direction
+                    movementDirection = moveDirZ;
+                } else {
+                    // Can't move in any direction
+                    movementDirection = Vector3.zero;
+                }
+            }
+        }
+
+        if (canMove) {
+            transform.position += movementDirection * moveDistance;
+        }
 
         isWalking = movementDirection != Vector3.zero;
 
