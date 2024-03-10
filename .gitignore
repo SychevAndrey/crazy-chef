@@ -8,6 +8,7 @@
 [Ll]ogs/
 [Oo]bj/
 [Uu]ser[Ss]ettings/
+Recordings/
 
 # Ignore all files in the MemoryCaptures folder (used by the Memory Profiler package)
 [Mm]emoryCaptures/
