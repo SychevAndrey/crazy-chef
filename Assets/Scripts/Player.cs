@@ -30,6 +30,14 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
     private void Start() {
         gameInput.OnInteract += GameInput_OnInteract;
+        gameInput.OnRemove += GameInput_OnRemove;
+    }
+
+    private void GameInput_OnRemove(object sender, EventArgs e) {
+        if (kitchenObject != null) {
+            kitchenObject = null;
+            kitchenObjectHoldPoint.DetachChildren();
+        }
     }
 
     private void GameInput_OnInteract(object sender, EventArgs e) {
