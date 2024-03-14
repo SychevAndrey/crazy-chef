@@ -30,13 +30,19 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
     private void Start() {
         gameInput.OnInteract += GameInput_OnInteract;
+        gameInput.OnInteractAlternate += GameInput_OnInteractAlternate;
         gameInput.OnRemove += GameInput_OnRemove;
+    }
+
+    private void GameInput_OnInteractAlternate(object sender, EventArgs e) {
+        if (selectedCounter != null) {
+            selectedCounter.InteractAlternate(this);
+        }
     }
 
     private void GameInput_OnRemove(object sender, EventArgs e) {
         if (kitchenObject != null) {
-            kitchenObject = null;
-            kitchenObjectHoldPoint.DetachChildren();
+            kitchenObject.DestroySelf();
         }
     }
 
@@ -95,14 +101,14 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
         if (!canMove) {
             Vector3 moveDirX = new Vector3(movementDirection.x, 0f, 0f).normalized;
-            canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
+            canMove = movementDirection.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
 
             if (canMove) {
                 // Can move only in x direction
                 movementDirection = moveDirX;
             } else {
                 Vector3 moveDirZ = new Vector3(0f, 0f, movementDirection.z).normalized;
-                canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
+                canMove = movementDirection.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
 
                 if (canMove) {
                     // Can move only in z direction
