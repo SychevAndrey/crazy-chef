@@ -8,6 +8,10 @@ public class ProgressBarUI : MonoBehaviour {
     [SerializeField] private Image progressBar;
     [SerializeField] private CuttingCounter cuttingCounter;
 
+    void LateUpdate() {
+        transform.forward = Camera.main.transform.forward;
+    }
+
     private void Start() {
         cuttingCounter.OnCuttingProgressChanged += CuttingCounter_OnCuttingProgressChanged;
         progressBar.fillAmount = 0f;

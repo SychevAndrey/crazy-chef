@@ -198,11 +198,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 495960292474754204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d84c4384ef5cae84db4c97aee6aa3f9e, type: 3}
+  m_Script: {fileID: 11500000, guid: fd637ec288875f6498ce4d7218f59884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   counterTopPoint: {fileID: 292925545700692956}
-  kitchenObjectSO: {fileID: 11400000, guid: 8563074fb5dcc654398a786bb72435a5, type: 2}
+  kitchenObjectSO: {fileID: 0}
 --- !u!4 &5907276996590578081 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7897109559006024872, guid: 701d43bd2ca6e22439e05bb42d400ab2,

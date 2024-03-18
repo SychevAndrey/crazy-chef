@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CuttingCounter : BaseCounter {
     public event EventHandler<OnCuttingProgressChangedEventArgs> OnCuttingProgressChanged;
+    public event EventHandler OnCutting;
     public class OnCuttingProgressChangedEventArgs : EventArgs {
         public float cuttingProgressNormalized;
     }
@@ -33,6 +35,10 @@ public class CuttingCounter : BaseCounter {
 
             int requiredCuttingProgress = GetCuttingRecipeSO(GetKitchenObject().GetKitchenObjectSO()).cuttingProgressRequired;
             OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs { cuttingProgressNormalized = (float)cuttingProgress / requiredCuttingProgress });
+
+            if (cuttingProgress >0) {
+                   OnCutting?.Invoke(this, EventArgs.Empty);
+            }
 
             if (cuttingProgress >= requiredCuttingProgress) {
                 KitchenObjectSO outputKitchenObjectSO = GetOutputKitchenObjectSO(GetKitchenObject().GetKitchenObjectSO());
