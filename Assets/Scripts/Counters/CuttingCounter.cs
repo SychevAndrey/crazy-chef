@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CuttingCounter : BaseCounter {
-    public event EventHandler<OnCuttingProgressChangedEventArgs> OnCuttingProgressChanged;
+public class CuttingCounter : BaseCounter, IProgressBar  {
+    public event EventHandler<IProgressBar.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler OnCutting;
-    public class OnCuttingProgressChangedEventArgs : EventArgs {
-        public float cuttingProgressNormalized;
-    }
+
 
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOArray;
     private int cuttingProgress = 0;
@@ -19,13 +17,13 @@ public class CuttingCounter : BaseCounter {
             if (player.HasKitchenObject() && HasRecipeWithInput(player.GetKitchenObject().GetKitchenObjectSO())) {
                 player.GetKitchenObject().SetKitchenObjectParent(this);
                 int requiredCuttingProgress = GetCuttingRecipeSO(GetKitchenObject().GetKitchenObjectSO()).cuttingProgressRequired;
-                OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs { cuttingProgressNormalized = (float)cuttingProgress / requiredCuttingProgress });
+                OnProgressChanged?.Invoke(this, new IProgressBar.OnProgressChangedEventArgs { progressNormalized = (float)cuttingProgress / requiredCuttingProgress });
             }
         } else if (!player.HasKitchenObject()) {
             GetKitchenObject().SetKitchenObjectParent(player);
             cuttingProgress = 0;
 
-            OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs { cuttingProgressNormalized = 0 });
+            OnProgressChanged?.Invoke(this, new IProgressBar.OnProgressChangedEventArgs { progressNormalized = 0 });
         }
     }
 
@@ -34,7 +32,7 @@ public class CuttingCounter : BaseCounter {
             cuttingProgress++;
 
             int requiredCuttingProgress = GetCuttingRecipeSO(GetKitchenObject().GetKitchenObjectSO()).cuttingProgressRequired;
-            OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs { cuttingProgressNormalized = (float)cuttingProgress / requiredCuttingProgress });
+            OnProgressChanged?.Invoke(this, new IProgressBar.OnProgressChangedEventArgs { progressNormalized = (float)cuttingProgress / requiredCuttingProgress });
 
             if (cuttingProgress >0) {
                    OnCutting?.Invoke(this, EventArgs.Empty);
