@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
-public class KitchenObject : MonoBehaviour {
+public class KitchenObject : MonoBehaviour
+{
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
 
-    public static KitchenObject SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent parent) {
+    public static KitchenObject SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent parent)
+    {
         Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab);
-        KitchenObject kitchenObject =  kitchenObjectTransform.GetComponent<KitchenObject>();
+        KitchenObject kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
         kitchenObject.SetKitchenObjectParent(parent);
 
         return kitchenObject;
@@ -16,22 +18,27 @@ public class KitchenObject : MonoBehaviour {
 
     private IKitchenObjectParent kitchenObjectParent;
 
-    public IKitchenObjectParent GetKitchenObjectParent() {
+    public IKitchenObjectParent GetKitchenObjectParent()
+    {
         return kitchenObjectParent;
     }
 
-    public void SetKitchenObjectParent(IKitchenObjectParent value) {
-        if (value.HasKitchenObject()) {
+    public void SetKitchenObjectParent(IKitchenObjectParent value)
+    {
+        if (value.HasKitchenObject())
+        {
             value.ClearKitchebObject();
         }
 
-        if (kitchenObjectParent != null) {
+        if (kitchenObjectParent != null)
+        {
             kitchenObjectParent.ClearKitchebObject();
         }
 
         kitchenObjectParent = value;
 
-        if (kitchenObjectParent.HasKitchenObject()) {
+        if (kitchenObjectParent.HasKitchenObject())
+        {
             Debug.LogError("KitchenObjectParent is already has object");
         }
         kitchenObjectParent.SetKitchenObject(this);
@@ -41,16 +48,32 @@ public class KitchenObject : MonoBehaviour {
 
     }
 
-    public KitchenObjectSO GetKitchenObjectSO() {
+    public KitchenObjectSO GetKitchenObjectSO()
+    {
         return kitchenObjectSO;
     }
 
-    public void DestroySelf() {
-        if (kitchenObjectParent != null) {
+    public void DestroySelf()
+    {
+        if (kitchenObjectParent != null)
+        {
             kitchenObjectParent.ClearKitchebObject();
         }
 
         Destroy(gameObject);
     }
-}
 
+    public bool TryGetPlate(out PlateKitchenObject plateKitchenObject)
+    {
+        if (this is PlateKitchenObject)
+        {
+            plateKitchenObject = this as PlateKitchenObject;
+            return true;
+        }
+        else
+        {
+            plateKitchenObject = null;
+            return false;
+        }
+    }
+}

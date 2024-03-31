@@ -96,10 +96,28 @@ public class StoveCounter : BaseCounter, IProgressBar
         else if (!player.HasKitchenObject())
         {
             GetKitchenObject().SetKitchenObjectParent(player);
-            state = State.Empty;
-            OnStateChanged?.Invoke(this, new onStateChangedEventArgs { state = state });
-            OnProgressChanged.Invoke(this, new IProgressBar.OnProgressChangedEventArgs { progressNormalized = 0f });
+            ResetState();
         }
+        else if (player.HasKitchenObject())
+        {
+            if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+            {
+                if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                {
+                    GetKitchenObject().DestroySelf();
+                    ResetState();
+                }
+            }
+        }
+    }
+
+    private void ResetState()
+    {
+        state = State.Empty;
+        fryingTimer = 0f;
+        fryingRecipeSO = null;
+        OnStateChanged?.Invoke(this, new onStateChangedEventArgs { state = state });
+        OnProgressChanged.Invoke(this, new IProgressBar.OnProgressChangedEventArgs { progressNormalized = 0f });
     }
 
     private bool HasRecipeWithInput(KitchenObjectSO inputKitchenObjectSO)
