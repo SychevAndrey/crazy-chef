@@ -38,4 +38,20 @@ public class PlateKitchenObject : KitchenObject
     {
         return kitchenObjectSOList;
     }
+
+    public bool CompareRecipe(RecipeSO recipe)
+    {
+        if (recipe.ingredients.Count != kitchenObjectSOList.Count)
+        {
+            return false;
+        }
+        foreach (KitchenObjectSO kitchenObjectSO in recipe.ingredients)
+        {
+            if (!kitchenObjectSOList.Contains(kitchenObjectSO))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
