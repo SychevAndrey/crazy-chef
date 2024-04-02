@@ -15,4 +15,4 @@ MonoBehaviour:
   ingredients:
   - {fileID: 11400000, guid: bd7138f69781d2741a904b9a6f337528, type: 2}
   - {fileID: 11400000, guid: e040a3ee56a91fd49b7c9f2dfbc376fb, type: 2}
-  recipeName: Burger
+  recipeName: Salad
