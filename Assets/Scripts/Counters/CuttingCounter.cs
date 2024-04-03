@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class CuttingCounter : BaseCounter, IProgressBar
 {
+    public static event EventHandler OnAnyCut;
     public event EventHandler<IProgressBar.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler OnCutting;
 
@@ -55,6 +56,7 @@ public class CuttingCounter : BaseCounter, IProgressBar
             if (cuttingProgress > 0)
             {
                 OnCutting?.Invoke(this, EventArgs.Empty);
+                OnAnyCut?.Invoke(this, EventArgs.Empty);
             }
 
             if (cuttingProgress >= requiredCuttingProgress)

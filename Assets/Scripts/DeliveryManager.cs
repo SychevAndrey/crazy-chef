@@ -9,6 +9,7 @@ public class DeliveryManager : MonoBehaviour
 {
     public event EventHandler OnRecipeSpawned;
     public event EventHandler OnRecipeCompleted;
+    public event EventHandler OnRecipeFailed;
     public static DeliveryManager Instance { get; private set; }
     [SerializeField] RecipeListSO recipeList;
     private List<RecipeSO> waitingRecipes;
@@ -49,6 +50,8 @@ public class DeliveryManager : MonoBehaviour
                 return;
             }
         }
+
+        OnRecipeFailed?.Invoke(this, EventArgs.Empty);
     }
 
     public List<RecipeSO> GetWaitingRecipes()
